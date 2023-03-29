@@ -1,46 +1,48 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Task List') }}
+            {{ __('Task') }}
         </h2>
     </x-slot>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="max-w-xl">
+                    <section>
+                        <header>
+                            <h2 class="text-lg font-medium text-gray-900">
+                                {{ $task->id ? __('Update Task') : __('Create New Task') }}
+                            </h2>
+                        </header>
 
-    <div class="container-fluid mt-2">
-        <div class="card">
-            <div class="card-body">
-                <div class="col-md-6">
-                    <form action="{{ $task->id ? route('tasks.update', $task->id) : route('tasks.store') }}" method="POST">
-                        @csrf
-                        @if($task->id)
-                            @method('PATCH')
-                        @endif
-                        <div class="mt-2">
-                            <label for="project_id" class="form-label">Project</label>
-                            <select class="form-control @error('project_id') is-invalid @enderror" name="project_id" id="project_id">
-                                <option value="">Select a project</option>
-                                @foreach($project as $key => $value)
-                                    <option value="{{ $value->id }}" @selected(old('project', $task?->project?->id) == $value->id)>{{ $value->name }}</option>
-                                @endforeach
-                            </select>
-                            <div class="invalid-feedback">@error('project_id') {{ $message }} @enderror</div>
-                        </div>
-                        <div class="mt-2">
-                            <label for="name" class="form-label">Name</label>
-                            <input class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name', $task->name ?? '') }}">
-                            <div class="invalid-feedback">@error('name') {{ $message }} @enderror</div>
-                        </div>
-                        <div class="mt-2">
-                            <label for="desc" class="form-label">desc</label>
-                            <textarea name="desc" id="desc" class="form-control @error('desc') is-invalid @enderror">{{ old('name', $task->name ?? '') }}</textarea>
-                            <div class="invalid-feedback">@error('desc') {{ $message }} @enderror</div>
-                        </div>
-                        <div class="mt-2">
-                            <button class="btn btn-success">Save</button>
-                        </div>
-                    </form>
+                        <form method="POST" action="{{ $task->id ? route('tasks.update', $task->id) : route('tasks.store') }}" class="mt-6 space-y-6">
+                            @csrf
+                            @if($task->id)
+                                @method('PATCH')
+                            @endif
+                            <div>
+                                <x-input-label for="project_id" :value="__('Project Id')"/>
+                                <x-select-input :options="$project" :selected="$task?->project?->id" class="mt-1 block w-full" name="project_id" id="project_id" autofocus/>
+                                <x-input-error :messages="$errors->get('project_id')" class="mt-2"/>
+                            </div>
+
+                            <div>
+                                <x-input-label for="password" :value="__('Name')"/>
+                                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" value="{{ old('name', $task->name ?? '') }}"/>
+                                <x-input-error :messages="$errors->get('name')" class="mt-2"/>
+                            </div>
+
+                            <div>
+                                <x-input-label for="password" :value="__('Description')"/>
+                                <x-textarea-input id="desc" name="desc" type="text" class="mt-1 block w-full" :inputData="old('desc', $task->desc ?? '')"/>
+                                <x-input-error :messages="$errors->get('desc')" class="mt-2"/>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <x-primary-button>{{ __('Save') }}</x-primary-button>
+                            </div>
+                        </form>
+                    </section>
                 </div>
             </div>
         </div>
-    </div>
-
 </x-app-layout>

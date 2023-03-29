@@ -31,7 +31,7 @@ class TaskController extends Controller
                 $q->where('project_id', $id);
             }
         })->get();
-        return view('task.index', ['project' => $this->project, 'task' => $task]);
+        return view('task.index', ['project' => $this->project->pluck('name', 'name'), 'task' => $task]);
     }
 
     /**
@@ -40,7 +40,7 @@ class TaskController extends Controller
     public function create()
     {
         $task = new Task();
-        return view('task.create-update', ['project' => $this->project, 'task' => $task]);
+        return view('task.create-update', ['project' => $this->project->pluck('name', 'id'), 'task' => $task]);
     }
 
     /**
@@ -63,7 +63,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return view('task.create-update', ['project' => $this->project, 'task' => $task]);
+        return view('task.create-update', ['project' => $this->project->pluck('name', 'id'), 'task' => $task]);
     }
 
     /**
@@ -71,7 +71,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        return view('task.create-update', ['project' => $this->project, 'task' => $task]);
+        return view('task.create-update', ['project' => $this->project->pluck('name', 'id'), 'task' => $task]);
     }
 
     /**
@@ -105,11 +105,10 @@ class TaskController extends Controller
     public function changePriority(Request $request)
     {
         try {
-            parse_str($request->reorder, $output);
-            foreach ($output['item'] as $i => $id) {
+            foreach ($request->reorder as $i => $id) {
                 Task::where('id', $id)->update(['priority' => ++$i]);
             }
-            return response()->json(['ok' => true, 'message' => 'Task Priority changed successfully.']);
+            return response()->json(['ok' => true, 'message' => 'Task Priority updated successfully.']);
         } catch (Exception $e) {
             info($e);
             return response()->json(['ok' => true, 'message' => 'Something went wrong!']);
