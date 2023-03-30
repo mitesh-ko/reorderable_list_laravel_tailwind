@@ -27,7 +27,7 @@ class TaskController extends Controller
     {
         $task = Task::with('project')->orderBy('created_at')->orderBy('priority')->where(function ($q) use ($request) {
             if ($request->project) {
-                $id = Project::where('name', $request->project)->first('id')->id;
+                $id = Project::where('name', $request->project)->first('id')?->id;
                 $q->where('project_id', $id);
             }
         })->get();
@@ -56,6 +56,7 @@ class TaskController extends Controller
         if(Task::create($validData)){
             return redirect()->route('tasks.index')->with('message', 'New task created successfully.');
         }
+        return redirect()->route('tasks.index')->with('message', 'Something went wrong!');
     }
 
     /**
@@ -87,6 +88,7 @@ class TaskController extends Controller
         if($task->update($validData)) {
             return redirect()->route('tasks.index')->with('message', 'Task updated successfully.');
         }
+        return redirect()->route('tasks.index')->with('message', 'Something went wrong!');
     }
 
     /**
