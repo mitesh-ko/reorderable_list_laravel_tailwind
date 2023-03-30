@@ -10,7 +10,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/asset/js/jquery.min.js"></script>
     <script>
         $(function () {
             $.ajaxSetup({
@@ -24,7 +24,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-<div id="myToast" class="hidden fixed right-10 top-10 px-5 py-4 text-white bg-green-600 rounded-md bg-white drop-shadow-lg" style="z-index: 1000">
+<div id="myToast" class="hidden fixed right-10 top-10 px-5 py-4 text-white bg-green-600 rounded-md drop-shadow-lg" style="z-index: 1000">
     <p class="text-sm">
         @if(session('message'))
             {{ session('message') }}
