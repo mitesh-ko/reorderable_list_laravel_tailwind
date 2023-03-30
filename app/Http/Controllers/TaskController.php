@@ -25,7 +25,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $task = Task::with('project')->orderBy('created_at')->orderBy('priority')->where(function ($q) use ($request) {
+        $task = Task::with('project')->orderBy('priority')->orderBy('created_at')->where(function ($q) use ($request) {
             if ($request->project) {
                 $id = Project::where('name', $request->project)->first('id')?->id;
                 $q->where('project_id', $id);
@@ -108,7 +108,7 @@ class TaskController extends Controller
     {
         try {
             foreach ($request->reorder as $i => $id) {
-                Task::where('id', $id)->update(['priority' => ++$i]);
+                Task::find($id)->update(['priority' => ++$i]);
             }
             return response()->json(['ok' => true, 'message' => 'Task Priority updated successfully.']);
         } catch (Exception $e) {
