@@ -4,11 +4,11 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+        <p class="text-red-600 font-bold">For Demo Only</p>
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" value="demo@example.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -19,7 +19,7 @@
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
-                            required autocomplete="current-password" />
+                            required autocomplete="current-password" value="12345678" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
